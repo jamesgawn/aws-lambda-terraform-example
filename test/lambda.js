@@ -14,14 +14,13 @@ describe('Lambda Test', function() {
 	});
 
 	describe('handler', function() {
-		it('successfully responds for handler', function() {
+		it('successfully response for handler', async () => {
 			event = JSON.parse(fs.readFileSync(path.join(__dirname + '/data/example-event.json')), 'utf8');
 			context = JSON.parse(fs.readFileSync(path.join(__dirname + '/data/example-context.json')), 'utf8');
 
-			lambda.handler(event, context, callback);
+			let result = await lambda.handler(event, context);
 
-			expect(callback).to.be.calledOnce;
-			expect(callback).to.be.calledWith(null, 'Hello World');
+			expect(result).to.equal('Hello World');
 		});
 
 	});

@@ -1,6 +1,6 @@
 const bunyan = require('bunyan');
 
-exports.handler = function (event, context, callback) {
+exports.handler = async (event, context) => {
 	let log = bunyan.createLogger({name: 'lambda-example', requestId: context.awsRequestId});
 
 	log.info({
@@ -11,11 +11,11 @@ exports.handler = function (event, context, callback) {
 	try {
 
 		log.info('Hello World');
-		callback(null, 'Hello World');
+		return 'Hello World';
 
 	} catch (err) {
 
-		log.error(err, 'Fatal Error');
+		Promise.reject(err);
 
 	}
 };
