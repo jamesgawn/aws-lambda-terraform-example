@@ -1,16 +1,16 @@
 variable "profile" {
-  type = "string",
-  default = "terraform"
+  type = string
+  default = "default"
 }
 
 variable "region" {
-  type = "string",
+  type = string
   default = "eu-west-2"
 }
 
 provider "aws" {
-  region = "${var.region}"
-  profile = "${var.profile}"
+  region = var.region
+  profile = var.profile
 }
 
 terraform {
@@ -21,6 +21,12 @@ terraform {
   }
 }
 
+data "archive_file" "lambda_code" {
+  type        = "zip"
+  output_path = "${path.module}/dist-lambda.zip"
+  source_dir = "${path.module}/dist"
+}
+
 resource "aws_lambda_function" "example" {
   function_name = "LambdaExample"
 
@@ -28,10 +34,11 @@ resource "aws_lambda_function" "example" {
   # is the name of the property under which the handler function was
   # exported in that file.
   handler = "lambda.handler"
-  runtime = "nodejs8.10"
+  runtime = "nodejs12.x"
   filename = "dist-lambda.zip"
+  source_code_hash = data.archive_file.lambda_code.output_sha
 
-  role = "${aws_iam_role.lambda_exec.arn}"
+  role = aws_iam_role.lambda_exec.arn
 }
 
 # IAM role which dictates what other AWS services the Lambda function

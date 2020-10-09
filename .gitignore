@@ -1,4 +1,5 @@
-/dist/*
-/dist*.zip
-/.idea/*
-/.terraform/*
+dist/*
+dist*.zip
+.idea/*
+.terraform/*
+dist-lambda.zip
