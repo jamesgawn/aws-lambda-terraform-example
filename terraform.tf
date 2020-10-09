@@ -28,7 +28,7 @@ data "archive_file" "lambda_code" {
 }
 
 resource "aws_lambda_function" "example" {
-  function_name = "LambdaExample"
+  function_name = "lambda-example"
 
   # "main" is the filename within the zip file (main.js) and "handler"
   # is the name of the property under which the handler function was
